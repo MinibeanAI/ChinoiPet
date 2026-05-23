@@ -1,0 +1,213 @@
+{
+  "character": {
+    "name": "guofeng_stage_pet",
+    "style": "guofeng anime stage dancer",
+    "baseOutfit": "opaque lightweight crimson gauze robe, black-gold long mamian skirt, hidden white wide-leg trousers, flat black ankle boots",
+    "hair": "medium black hair with small tied tuft at back"
+  },
+  "animations": [
+    {
+      "id": "idle_breathe_wind",
+      "category": "idle",
+      "priority": "P0",
+      "durationSeconds": 1,
+      "loop": true,
+      "description": "Standing idle with a low-flicker two-frame stable sprite sequence; visible breathing comes from CSS body motion rather than generated frame swaps.",
+      "sourceVideos": [
+        "copy_0661C5E4-D638-4328-858C-D4144EB0EC90.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "pet_tap_smile",
+      "category": "interaction",
+      "priority": "P0",
+      "durationSeconds": 1.5,
+      "loop": false,
+      "description": "Touched reaction: slight bow, closed-eye smile, tiny shoulder curl, sleeve rebound.",
+      "sourceVideos": [
+        "copy_D0E567D2-6F8E-4BE9-A2BB-76372ACD98E9.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "clingy_pout",
+      "category": "interaction",
+      "priority": "P1",
+      "durationSeconds": 2.4,
+      "loop": false,
+      "description": "Cute clingy reaction for long idle time: leans forward slightly, pouts, sleeve gathers near chest, then softens back into a smile.",
+      "sourceVideos": [],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "blow_kiss",
+      "category": "interaction",
+      "priority": "P1",
+      "durationSeconds": 1.25,
+      "loop": false,
+      "description": "Cute blow-kiss reaction: hand lifts to lips, kisses the palm, sends the kiss outward, then returns to idle.",
+      "sourceVideos": [],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "wave_come_here",
+      "category": "daily",
+      "priority": "P0",
+      "durationSeconds": 2.2,
+      "loop": false,
+      "description": "Looks at user and waves them closer with a bright stage smile.",
+      "sourceVideos": [
+        "copy_D0E567D2-6F8E-4BE9-A2BB-76372ACD98E9.MOV",
+        "copy_E16A2CFE-7ABA-47E0-AC89-764B11C304BF.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "listen_to_crowd",
+      "category": "daily",
+      "priority": "P0",
+      "durationSeconds": 2.6,
+      "loop": false,
+      "description": "Hand by ear, body slightly angled, smiling as if listening for cheers.",
+      "sourceVideos": [
+        "copy_E16A2CFE-7ABA-47E0-AC89-764B11C304BF.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "drink_reminder",
+      "category": "reminder",
+      "priority": "P0",
+      "durationSeconds": 2.5,
+      "loop": false,
+      "description": "Presents a cup with a gentle nod for water reminders.",
+      "sourceVideos": [],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "rest_reminder",
+      "category": "reminder",
+      "priority": "P0",
+      "durationSeconds": 3.5,
+      "loop": false,
+      "description": "Sleeves gathered, shoulder-neck stretch, soft tired smile for rest reminders.",
+      "sourceVideos": [],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "calendar_gentle_prompt",
+      "category": "calendar",
+      "priority": "P0",
+      "durationSeconds": 2.5,
+      "loop": false,
+      "description": "Gentle wave and point toward reminder bubble for normal calendar events.",
+      "sourceVideos": [
+        "copy_D0E567D2-6F8E-4BE9-A2BB-76372ACD98E9.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "calendar_urgent_prompt",
+      "category": "calendar",
+      "priority": "P1",
+      "durationSeconds": 2,
+      "loop": false,
+      "description": "Stands straighter and gives a focused short reminder for important events.",
+      "sourceVideos": [],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "lottie",
+      "currentFormat": "png-sequence"
+    },
+    {
+      "id": "sleeve_sweep_loop",
+      "category": "dance",
+      "priority": "P1",
+      "durationSeconds": 3,
+      "loop": true,
+      "description": "Short dance loop with side-to-side sleeve sweeps and weight shift; not a costume-removal action, robe and mamian skirt stay worn.",
+      "sourceVideos": [
+        "copy_1A54D7DC-954B-430A-A347-301C8791A1D5.MOV",
+        "copy_2B4F3316-8CA6-426B-9913-E09D6E710077.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "hybrid"
+    },
+    {
+      "id": "robe_sweep_intro",
+      "category": "dance",
+      "priority": "P1",
+      "durationSeconds": 1.8,
+      "loop": false,
+      "description": "Dramatic opaque crimson gauze robe sweep for entrance or celebration; the robe blocks the skirt when it passes behind or across the body.",
+      "sourceVideos": [
+        "copy_1A54D7DC-954B-430A-A347-301C8791A1D5.MOV",
+        "copy_0661C5E4-D638-4328-858C-D4144EB0EC90.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "hybrid"
+    },
+    {
+      "id": "skirt_release_spin",
+      "category": "dance-special",
+      "priority": "P2",
+      "durationSeconds": 3,
+      "loop": false,
+      "description": "Special no-robe stage action: every frame has the red outer robe already removed. Starts back-facing, left hand extended, right hand tears the black-gold mamian skirt clockwise from the waist, then the character turns right to face the audience and discards the half-dropped skirt, ending in white wide-leg trousers with no mamian skirt and no waist seal.",
+      "sourceVideos": [
+        "copy_32DD8F5D-7894-468B-B7E7-95B8C80FA587.MOV",
+        "copy_4832596A-87C2-48FE-A73A-73B7AD0C201D.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "png-sequence",
+      "requiresKeyframeApproval": true
+    },
+    {
+      "id": "robe_remove_stage",
+      "category": "dance-special",
+      "priority": "P2",
+      "durationSeconds": 2.6,
+      "loop": false,
+      "description": "Special stage transition into a half-removed robe pose: bare back, robe gradually slides down and gathers around the waist, arms opened to both sides at waist level.",
+      "sourceVideos": [
+        "copy_1A54D7DC-954B-430A-A347-301C8791A1D5.MOV",
+        "copy_0661C5E4-D638-4328-858C-D4144EB0EC90.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "png-sequence",
+      "requiresKeyframeApproval": true
+    },
+    {
+      "id": "single_leg_knee_slide_backbend",
+      "category": "dance-special",
+      "priority": "P2",
+      "durationSeconds": 1,
+      "loop": false,
+      "description": "White-trouser single-leg knee slide and backbend using the user-selected sheet, with only the original second frame and final frame removed.",
+      "sourceVideos": [
+        "copy_490B3E57-AB27-46CA-8948-6C50041C3EFC.MOV"
+      ],
+      "assetStatus": "keyframe-review",
+      "finalFormat": "png-sequence",
+      "requiresKeyframeApproval": true
+    }
+  ]
+}

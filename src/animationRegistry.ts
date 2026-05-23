@@ -1,4 +1,4 @@
-import manifestData from '../docs/animation-manifest.json';
+import manifestData from './assets/animation-manifest.json';
 import type { CalendarCategory } from './global';
 
 export type AnimationId =
