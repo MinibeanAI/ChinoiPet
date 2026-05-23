@@ -14,8 +14,6 @@ contextBridge.exposeInMainWorld('petAPI', {
   requestCalendarAccess: () => ipcRenderer.invoke('permissions:request-calendar'),
   openSystemSettings: (target) => ipcRenderer.invoke('system:open-settings', target),
   openContextMenu: () => ipcRenderer.invoke('context-menu:open'),
-  getAgentStatus: () => ipcRenderer.invoke('agent-status:get'),
-  openAgentSession: () => ipcRenderer.invoke('agent-status:open-session'),
   onToggleSettings: (callback) => {
     ipcRenderer.on('settings:toggle', callback);
     return () => ipcRenderer.removeListener('settings:toggle', callback);
@@ -23,9 +21,5 @@ contextBridge.exposeInMainWorld('petAPI', {
   onPlayAnimation: (callback) => {
     ipcRenderer.on('animation:play', callback);
     return () => ipcRenderer.removeListener('animation:play', callback);
-  },
-  onAgentStatusUpdate: (callback) => {
-    ipcRenderer.on('agent-status:update', callback);
-    return () => ipcRenderer.removeListener('agent-status:update', callback);
   }
 });

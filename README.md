@@ -1,6 +1,6 @@
-# 国风桌宠（macOS Desktop Pet）
+# 国风桌宠
 
-一个 macOS 透明置顶桌宠：支持拖动、点击互动动作、喝水/休息提醒、系统日历读取与提前提醒。
+一个透明置顶桌宠：支持拖动、点击互动动作、喝水/休息提醒、系统日历读取与提前提醒。系统日历读取目前仅支持 macOS，Windows 可运行桌宠与基础提醒功能。
 
 ## 快速开始
 
@@ -9,15 +9,30 @@ npm install
 npm run dev
 ```
 
+## 本地运行
+
+```bash
+npm run build
+npm run start
+```
+
 ## 打包
+
+macOS:
 
 ```bash
 npm run dist:mac
 ```
 
-签名/公证说明见 [docs/macos-signing-notarization.md](file:///Users/douer/Documents/New%20project/docs/macos-signing-notarization.md)。
+Windows:
 
-## 安装（未签名/未公证版本）
+```bash
+npm run dist:win
+```
+
+打包产物会生成到 `release/` 目录。macOS 签名/公证需要本机配置 Apple Developer 证书与 notarytool；未配置时可使用未签名版本进行本地测试。
+
+## 安装（macOS 未签名/未公证版本）
 
 如果你使用的是未签名/未公证的 DMG，macOS 可能提示“无法打开”“来自身份不明的开发者”或“已损坏”，可按以下方式处理：
 

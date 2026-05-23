@@ -1,17 +1,19 @@
 .DS_Store
 *.log
 
+.env
+.env.*
+*.local
+
 node_modules/
 dist/
 release/
 
 reports/
-previews/runtime-gif-frames/
-previews/sequence-contact-sheets/
-
-asset-drafts/
-build/
-docs/
 previews/
+docs/
+asset-drafts/
 video-beats/
 video-review-frames/
+
+build/icon.iconset/

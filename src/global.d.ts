@@ -20,9 +20,6 @@ declare global {
       openContextMenu: () => Promise<void>;
       onToggleSettings: (callback: () => void) => () => void;
       onPlayAnimation: (callback: (_event: unknown, animationId: AnimationId) => void) => () => void;
-      getAgentStatus: () => Promise<AgentStatus | null>;
-      openAgentSession: () => Promise<PermissionActionResult>;
-      onAgentStatusUpdate: (callback: (_event: unknown, status: AgentStatus | null) => void) => () => void;
     };
   }
 }
@@ -91,16 +88,6 @@ export type NotificationAuthorizationStatus =
   | 'unknown';
 
 export type SystemSettingsTarget = 'notifications' | 'automation';
-
-export interface AgentStatus {
-  source: 'codex' | 'claude-desktop' | 'claude-code' | 'hermes' | 'unknown';
-  state: 'idle' | 'running' | 'needs_confirmation' | 'done' | 'error';
-  title: string;
-  detail?: string;
-  updatedAt: number;
-  sessionPath?: string;
-  sessionUrl?: string;
-}
 
 export type CalendarCategory =
   | 'interview'

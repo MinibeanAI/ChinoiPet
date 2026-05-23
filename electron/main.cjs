@@ -12,8 +12,7 @@ const {
 } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
-const os = require('node:os');
-const { execFile, execFileSync } = require('node:child_process');
+const { execFile } = require('node:child_process');
 
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 const windowStatePath = path.join(app.getPath('userData'), 'window-state.json');
@@ -39,10 +38,6 @@ let lastCalendarAccess = {
   ok: process.platform === 'darwin',
   message: process.platform === 'darwin' ? '尚未检测日历权限。' : '系统日历仅在 macOS 可用。'
 };
-let agentStatus = null;
-const agentStatusPath = path.join(os.homedir(), '.desktop-pet', 'agent-status.json');
-const claudeSessionsDir = path.join(os.homedir(), '.claude', 'sessions');
-const hermesSessionsDir = path.join(os.homedir(), '.hermes', 'sessions');
 
 function clampNumber(value, min, max, fallback) {
   const number = Number(value);
@@ -465,182 +460,11 @@ function openSystemSettings(target) {
   return { ok: true, message: '已打开系统设置。' };
 }
 
-function normalizeAgentStatus(input) {
-  if (!input || typeof input !== 'object') return null;
-  if (typeof input.title !== 'string' || !input.title.trim()) return null;
-
-  const updatedAt = Number(input.updatedAt);
-  const sessionPath = typeof input.sessionPath === 'string' ? input.sessionPath : undefined;
-  const sessionUrl = typeof input.sessionUrl === 'string' ? input.sessionUrl : undefined;
-
-  return {
-    source: typeof input.source === 'string' ? input.source : 'unknown',
-    state: typeof input.state === 'string' ? input.state : 'running',
-    title: input.title,
-    detail: typeof input.detail === 'string' ? input.detail : undefined,
-    updatedAt: Number.isFinite(updatedAt) ? updatedAt : Date.now(),
-    sessionPath,
-    sessionUrl
-  };
-}
-
-function readAgentStatusFile() {
-  try {
-    return normalizeAgentStatus(JSON.parse(fs.readFileSync(agentStatusPath, 'utf8')));
-  } catch {
-    return null;
-  }
-}
-
-function newestFileIn(dirPath, pattern) {
-  try {
-    const entries = fs.readdirSync(dirPath);
-    const matches = entries
-      .filter((name) => pattern.test(name))
-      .map((name) => {
-        const fullPath = path.join(dirPath, name);
-        const stat = fs.statSync(fullPath);
-        return { fullPath, mtimeMs: stat.mtimeMs };
-      })
-      .sort((a, b) => b.mtimeMs - a.mtimeMs);
-
-    return matches[0]?.fullPath;
-  } catch {
-    return undefined;
-  }
-}
-
-function mapCliStatusToState(statusRaw) {
-  const status = String(statusRaw ?? '').toLowerCase();
-  if (!status) return 'running';
-  if (status.includes('need') && status.includes('confirm')) return 'needs_confirmation';
-  if (status.includes('wait') || status.includes('confirm') || status.includes('input')) return 'needs_confirmation';
-  if (status.includes('error') || status.includes('fail') || status.includes('crash')) return 'error';
-  if (status.includes('done') || status.includes('complete') || status.includes('finished')) return 'done';
-  if (status.includes('idle')) return 'idle';
-  return 'running';
-}
-
-function readClaudeCodeStatus() {
-  const filePath = newestFileIn(claudeSessionsDir, /\.json$/i);
-  if (!filePath) return null;
-
-  try {
-    const session = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const cwd = typeof session.cwd === 'string' ? session.cwd : undefined;
-    const state = mapCliStatusToState(session.status);
-
-    return {
-      source: 'claude-code',
-      state,
-      title: 'Claude Code',
-      detail: cwd ? path.basename(cwd) : undefined,
-      updatedAt: Date.now(),
-      sessionPath: cwd
-    };
-  } catch {
-    return null;
-  }
-}
-
-function readHermesStatus() {
-  const filePath = newestFileIn(hermesSessionsDir, /^session_.*\.json$/i);
-  if (!filePath) return null;
-
-  try {
-    const session = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const sessionId = typeof session.session_id === 'string' ? session.session_id : path.basename(filePath);
-    const state = detectRunningAgents()?.source === 'hermes' ? 'running' : 'idle';
-
-    return {
-      source: 'hermes',
-      state,
-      title: 'Hermes',
-      detail: sessionId,
-      updatedAt: Date.now(),
-      sessionPath: filePath
-    };
-  } catch {
-    return null;
-  }
-}
-
-function detectRunningAgents() {
-  try {
-    const result = execFileSync('ps', ['aux'], { encoding: 'utf8' });
-    const lines = result.split('\n');
-    const has = (pattern) => lines.some((line) => pattern.test(line));
-
-    if (has(/\bcodex\b/i)) {
-      return {
-        source: 'codex',
-        state: 'running',
-        title: 'Codex 运行中',
-        updatedAt: Date.now()
-      };
-    }
-
-    if (has(/\bclaude\b/i)) {
-      return {
-        source: 'claude-code',
-        state: 'running',
-        title: 'Claude Code 运行中',
-        updatedAt: Date.now()
-      };
-    }
-
-    if (has(/\bhermes\b/i)) {
-      return {
-        source: 'hermes',
-        state: 'running',
-        title: 'Hermes 运行中',
-        updatedAt: Date.now()
-      };
-    }
-  } catch {}
-
-  return null;
-}
-
-function pollAgentStatus() {
-  const nextStatus = readAgentStatusFile() ?? readClaudeCodeStatus() ?? readHermesStatus() ?? detectRunningAgents();
-
-  const changed = JSON.stringify(nextStatus) !== JSON.stringify(agentStatus);
-  const shouldNotify =
-    nextStatus?.state === 'needs_confirmation' &&
-    JSON.stringify({ ...nextStatus, updatedAt: 0 }) !== JSON.stringify({ ...(agentStatus ?? {}), updatedAt: 0 });
-  agentStatus = nextStatus;
-  if (changed) {
-    sendToRenderer('agent-status:update', agentStatus);
-  }
-  if (shouldNotify) {
-    showNotification('需要确认', nextStatus.title);
-  }
-}
-
-function openAgentSession() {
-  if (!agentStatus) return { ok: false, message: '当前没有可打开的任务会话。' };
-
-  const target = agentStatus.sessionUrl ?? agentStatus.sessionPath;
-  if (!target) return { ok: false, message: '当前会话未提供可打开的路径。' };
-
-  if (typeof agentStatus.sessionUrl === 'string' && agentStatus.sessionUrl) {
-    shell.openExternal(agentStatus.sessionUrl);
-    return { ok: true, message: '已打开会话链接。' };
-  }
-
-  shell.openPath(agentStatus.sessionPath);
-  return { ok: true, message: '已打开会话路径。' };
-}
-
 app.whenReady().then(() => {
   syncLoginItemSettings(readSettings().openAtLogin);
   createWindow();
   createTray();
   Menu.setApplicationMenu(buildApplicationMenu());
-
-  pollAgentStatus();
-  setInterval(pollAgentStatus, 2_000);
 
   ipcMain.handle('settings:get', () => readSettings());
   ipcMain.handle('settings:set', (_event, settings) => writeSettings(settings));
@@ -675,8 +499,6 @@ app.whenReady().then(() => {
     return lastCalendarAccess;
   });
   ipcMain.handle('system:open-settings', (_event, target) => openSystemSettings(target));
-  ipcMain.handle('agent-status:get', () => agentStatus);
-  ipcMain.handle('agent-status:open-session', () => openAgentSession());
   ipcMain.handle('context-menu:open', () => {
     buildPetMenu().popup({ window: mainWindow });
   });

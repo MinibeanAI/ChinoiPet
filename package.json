@@ -1,7 +1,7 @@
 {
   "name": "guofeng-stage-desktop-pet",
   "version": "0.1.0",
-  "description": "A transparent macOS guofeng desktop pet with reminders and calendar prompts.",
+  "description": "A transparent guofeng desktop pet with reminders and calendar prompts.",
   "author": "douer",
   "private": true,
   "type": "module",
@@ -26,9 +26,11 @@
     "icon:build": "node scripts/build-icon.mjs",
     "assets:clean-white-edges": "node scripts/clean-white-edges.mjs --write",
     "verify": "npm run check:assets && npm run check:sequences && npm run check:lottie && npm run preview:render && npm run build",
-    "pack:mac": "node scripts/ensure-app-not-running.mjs && npm run build && electron-builder --mac dir",
-    "dist:mac": "node scripts/ensure-app-not-running.mjs && npm run build && electron-builder --mac dmg",
-    "dist:mac:no-notary": "node scripts/ensure-app-not-running.mjs && npm run build && PET_ADHOC_DEEP_SIGN=1 APPLE_NOTARYTOOL_PROFILE= CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac dmg",
+    "pack:mac": "node scripts/ensure-app-not-running.mjs && npm run build && electron-builder --publish never --mac dir",
+    "dist:mac": "node scripts/ensure-app-not-running.mjs && npm run build && electron-builder --publish never --mac dmg",
+    "dist:mac:no-notary": "node scripts/ensure-app-not-running.mjs && npm run build && PET_ADHOC_DEEP_SIGN=1 APPLE_NOTARYTOOL_PROFILE= CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --publish never --mac dmg",
+    "pack:win": "npm run build && electron-builder --publish never --win dir --x64",
+    "dist:win": "npm run build && electron-builder --publish never --win nsis --x64",
     "notarize:artifact": "node scripts/notarize-artifact.mjs"
   },
   "dependencies": {
@@ -49,7 +51,6 @@
     "appId": "com.douer.guofeng-stage-desktop-pet",
     "productName": "国风桌宠",
     "artifactName": "${productName}-${version}-${arch}.${ext}",
-    "electronDist": "node_modules/electron/dist",
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -76,6 +77,24 @@
         "NSCalendarsUsageDescription": "用于在日程开始前提醒你。",
         "NSAppleEventsUsageDescription": "用于读取系统 Calendar 中未来 24 小时的日程。"
       }
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
     },
     "dmg": {
       "contents": [

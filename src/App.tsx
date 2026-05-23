@@ -12,7 +12,6 @@ import {
   type AnimationId
 } from './animationRegistry';
 import type {
-  AgentStatus,
   CalendarEvent,
   NotificationAuthorizationStatus,
   PermissionActionResult,
@@ -114,7 +113,6 @@ export default function App() {
   const [settings, setSettings] = useState<PetSettings>(defaultSettings);
   const [activeAnimation, setActiveAnimation] = useState<AnimationId>(idleAnimation);
   const [bubble, setBubble] = useState('');
-  const [agentStatus, setAgentStatus] = useState<AgentStatus | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [debugControlsOpen, setDebugControlsOpen] = useState(import.meta.env.DEV);
   const [onboardingOpen, setOnboardingOpen] = useState(false);
@@ -138,12 +136,6 @@ export default function App() {
         setOnboardingOpen(true);
       }
     });
-  }, []);
-
-  useEffect(() => {
-    window.petAPI.getAgentStatus().then((status) => setAgentStatus(status));
-    const dispose = window.petAPI.onAgentStatusUpdate((_event, status) => setAgentStatus(status));
-    return () => dispose();
   }, []);
 
   useEffect(() => {
@@ -237,13 +229,6 @@ export default function App() {
   const openSystemSettings = useCallback(async (target: SystemSettingsTarget) => {
     const result = await window.petAPI.openSystemSettings(target);
     setPermissionMessage(result.message);
-  }, []);
-
-  const openAgentSession = useCallback(async () => {
-    const result = await window.petAPI.openAgentSession();
-    if (!result.ok) {
-      setPermissionMessage(result.message);
-    }
   }, []);
 
   useEffect(() => {
@@ -406,17 +391,6 @@ export default function App() {
 
   return (
     <main className={`desktop-pet-shell${sidePanelOpen ? ' side-panel-open' : ''}`} onContextMenu={handleContextMenu}>
-      {agentStatus ? (
-        <button
-          type="button"
-          className={`agent-status-bar no-drag state-${agentStatus.state}`}
-          onClick={openAgentSession}
-          disabled={!agentStatus.sessionPath && !agentStatus.sessionUrl}
-        >
-          <strong>{agentStatus.title}</strong>
-          {agentStatus.detail ? <span>{agentStatus.detail}</span> : null}
-        </button>
-      ) : null}
       <section className="pet-wrap">
         {bubble ? <div className="speech-bubble">{bubble}</div> : null}
         <PetCharacter activeAnimation={activeAnimation} onPointerDown={handlePointerDown} />
