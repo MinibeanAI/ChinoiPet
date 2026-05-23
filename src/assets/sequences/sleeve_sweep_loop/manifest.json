@@ -1,0 +1,13 @@
+{
+  "id": "sleeve_sweep_loop",
+  "status": "keyframe-review",
+  "fps": 3,
+  "loop": true,
+  "frameCount": 4,
+  "label": "来回摆动v1-低闪4帧",
+  "motion": "sleeve",
+  "importedAt": "2026-05-21T08:59:20.300Z",
+  "reviewNotes": [
+    "Reduced sleeve sweep to low-flicker keyframes from original indices 0, 2, 3, 5."
+  ]
+}

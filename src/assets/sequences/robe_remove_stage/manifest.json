@@ -1,0 +1,10 @@
+{
+  "id": "robe_remove_stage",
+  "status": "keyframe-review",
+  "fps": 6,
+  "loop": false,
+  "frameCount": 8,
+  "label": "脱外衫v3-8帧",
+  "importedAt": "2026-05-22T09:57:55.744Z",
+  "motion": "robe"
+}

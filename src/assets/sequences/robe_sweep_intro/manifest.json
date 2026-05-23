@@ -1,0 +1,13 @@
+{
+  "id": "robe_sweep_intro",
+  "status": "keyframe-review",
+  "fps": 4,
+  "loop": false,
+  "frameCount": 4,
+  "label": "外衫起势无白边v1-低闪4帧",
+  "importedAt": "2026-05-21T08:56:24.651Z",
+  "motion": "robe",
+  "reviewNotes": [
+    "Reduced to low-flicker keyframes from original indices 0, 2, 3, 5 to avoid AI frame-to-frame detail shimmer."
+  ]
+}

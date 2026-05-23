@@ -1,0 +1,28 @@
+{
+  "id": "skirt_release_spin",
+  "status": "keyframe-review",
+  "fps": 6,
+  "loop": false,
+  "frameCount": 8,
+  "label": "腰部整面右裙展开撕马面裙v11",
+  "motion": "spin",
+  "requiresNoRedOuterRobe": true,
+  "noRedOuterRobe": true,
+  "sourceAsset": "asset-drafts/keyframe-sheets/skirt_release_spin-v11-redrawn-white-pants-source.png",
+  "choreographyRules": [
+    "Before the skirt is removed, the character faces away from the audience.",
+    "Before removal, the left hand stays on the left waist and the right hand performs the single-hand clockwise tear at the waist.",
+    "The skirt opening is on the character front, not on the back, so no back-opening white-trousers reveal is used before removal.",
+    "The middle frames include a waist-origin pull-open beat where the whole right side skirt panel expands from the waist.",
+    "White wide-leg trousers appear only after the removal beat.",
+    "The final frame shows the removed mamian skirt on the ground.",
+    "The white-trouser frames are redrawn source frames, not patched or overlaid."
+  ],
+  "reviewNotes": [
+    "Regenerated as a complete source sheet after rejecting patched white-trouser frames.",
+    "Middle transition frames show the whole right side skirt panel being pulled open from the waist.",
+    "White-trouser and ground-skirt frames come from the redrawn source sheet without local compositing.",
+    "White-trouser frames are not modified with local trouser overlays."
+  ],
+  "removedBorderFragments": 0
+}

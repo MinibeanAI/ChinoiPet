@@ -1,0 +1,14 @@
+{
+  "id": "blow_kiss",
+  "status": "keyframe-review",
+  "fps": 4,
+  "loop": false,
+  "frameCount": 5,
+  "label": "飞吻亲手心修正版v3",
+  "importedAt": "2026-05-21T10:09:02.828Z",
+  "motion": "kiss",
+  "sourceAsset": "asset-drafts/keyframe-sheets/blow_kiss-v2-clean-source.png",
+  "reviewNotes": [
+    "Restored the missing hand-to-lips and kiss-the-palm beats; kept original source frames 0, 1, 2, 4, 5."
+  ]
+}

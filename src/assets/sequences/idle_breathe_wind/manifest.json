@@ -1,0 +1,13 @@
+{
+  "id": "idle_breathe_wind",
+  "status": "keyframe-review",
+  "fps": 2,
+  "loop": true,
+  "frameCount": 2,
+  "label": "默认呼吸低闪2帧v2",
+  "importedAt": "2026-05-21T08:49:02.816Z",
+  "motion": "breathe",
+  "reviewNotes": [
+    "Reduced default idle from six generated frames to two stable frames; CSS breathing supplies the visible motion to avoid AI frame-to-frame flicker."
+  ]
+}

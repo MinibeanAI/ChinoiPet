@@ -1,0 +1,13 @@
+{
+  "id": "clingy_pout",
+  "status": "keyframe-review",
+  "fps": 3,
+  "loop": false,
+  "frameCount": 3,
+  "label": "撒娇无白边v1-低闪3帧",
+  "importedAt": "2026-05-21T08:56:24.583Z",
+  "motion": "pout",
+  "reviewNotes": [
+    "Reduced to low-flicker keyframes from original indices 0, 3, 5 to avoid AI frame-to-frame detail shimmer."
+  ]
+}

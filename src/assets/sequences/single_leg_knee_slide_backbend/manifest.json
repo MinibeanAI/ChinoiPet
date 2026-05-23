@@ -1,0 +1,16 @@
+{
+  "id": "single_leg_knee_slide_backbend",
+  "status": "keyframe-review",
+  "fps": 6,
+  "loop": false,
+  "frameCount": 6,
+  "label": "单腿滑跪后仰v4-原图比例不放大",
+  "importedAt": "2026-05-21T14:07:17.833Z",
+  "motion": "slide",
+  "sourceAsset": "asset-drafts/keyframe-sheets/single_leg_knee_slide_backbend-v2-user-approved-source.png",
+  "reviewNotes": [
+    "Re-extracted from the user-selected source at original source pixel size with no automatic enlargement.",
+    "All frames are placed on a fixed 400x400 transparent canvas and bottom-aligned to preserve the source sheet relative scale.",
+    "Kept original source components 0, 2, 3, 4, 5, 6."
+  ]
+}

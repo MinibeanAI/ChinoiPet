@@ -1,0 +1,13 @@
+{
+  "id": "drink_reminder",
+  "status": "keyframe-review",
+  "fps": 3,
+  "loop": false,
+  "frameCount": 3,
+  "label": "复古大杯喝水v3-低闪3帧",
+  "importedAt": "2026-05-21T08:56:24.618Z",
+  "motion": "prompt",
+  "reviewNotes": [
+    "Reduced to low-flicker keyframes from original indices 0, 3, 5 to avoid AI frame-to-frame detail shimmer."
+  ]
+}

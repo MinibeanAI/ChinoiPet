@@ -1,0 +1,13 @@
+{
+  "id": "calendar_urgent_prompt",
+  "status": "keyframe-review",
+  "fps": 3,
+  "loop": false,
+  "frameCount": 3,
+  "label": "重要日程提示无白边v1-低闪3帧",
+  "importedAt": "2026-05-21T08:56:24.642Z",
+  "motion": "prompt",
+  "reviewNotes": [
+    "Reduced to low-flicker keyframes from original indices 0, 3, 5 to avoid AI frame-to-frame detail shimmer."
+  ]
+}
