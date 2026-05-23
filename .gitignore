@@ -8,3 +8,10 @@ release/
 reports/
 previews/runtime-gif-frames/
 previews/sequence-contact-sheets/
+
+asset-drafts/
+build/
+docs/
+previews/
+video-beats/
+video-review-frames/
