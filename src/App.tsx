@@ -123,6 +123,7 @@ export default function App() {
   const nextWaterAtRef = useRef(minutesFromNow(defaultSettings.waterIntervalMinutes));
   const nextRestAtRef = useRef(minutesFromNow(defaultSettings.restIntervalMinutes));
   const lastClickAtRef = useRef(Date.now());
+  const activeAnimationRef = useRef<AnimationId>(idleAnimation);
   const notifiedCalendarIdsRef = useRef(new Set<string>());
   const sidePanelOpen = settingsOpen || onboardingOpen;
 
@@ -139,7 +140,21 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    window.petAPI.setWindowSize({ width: sidePanelOpen ? 520 : 260, height: sidePanelOpen ? 320 : 300 });
+    const nextWidth = sidePanelOpen ? 520 : 260;
+    const nextHeight = sidePanelOpen ? 320 : 300;
+    const compactPetCenterX = 130;
+    const panelPetCenterX = 280;
+
+    window.petAPI.getWindowBounds().then((bounds) => {
+      const currentPetCenterX = bounds.width > 390 ? panelPetCenterX : compactPetCenterX;
+      const nextPetCenterX = sidePanelOpen ? panelPetCenterX : compactPetCenterX;
+      window.petAPI.setWindowBounds({
+        x: bounds.x + currentPetCenterX - nextPetCenterX,
+        y: bounds.y + bounds.height - nextHeight,
+        width: nextWidth,
+        height: nextHeight
+      });
+    });
   }, [sidePanelOpen]);
 
   const refreshPermissionStatus = useCallback(async () => {
@@ -168,6 +183,7 @@ export default function App() {
   const playAnimation = useCallback((animationId: AnimationId, message = bubbleForAnimation(animationId)) => {
     window.clearTimeout(animationTimerRef.current);
     setActiveAnimation(animationId);
+    activeAnimationRef.current = animationId;
     setBubble(message);
 
     if (animationId === idleAnimation) {
@@ -176,6 +192,7 @@ export default function App() {
 
     animationTimerRef.current = window.setTimeout(() => {
       setActiveAnimation(idleAnimation);
+      activeAnimationRef.current = idleAnimation;
       setBubble('');
     }, animationDurationMs(animationId));
   }, []);
@@ -266,18 +283,18 @@ export default function App() {
     if (!settings.dailyActionsEnabled) return undefined;
 
     const dailyTimer = window.setInterval(() => {
-      if (activeAnimation !== idleAnimation) return;
+      if (activeAnimationRef.current !== idleAnimation) return;
       const idleForMs = Date.now() - lastClickAtRef.current;
       const animationPool = idleForMs >= 120_000 ? longIdleAnimationPool : dailyAnimationPool;
       playAnimation(
         animationPool === longIdleAnimationPool
-          ? pickRandomAnimation(animationPool, activeAnimation)
-          : pickDailyAnimation(activeAnimation)
+          ? pickRandomAnimation(animationPool, activeAnimationRef.current)
+          : pickDailyAnimation(activeAnimationRef.current)
       );
     }, 50_000);
 
     return () => window.clearInterval(dailyTimer);
-  }, [activeAnimation, playAnimation, settings.dailyActionsEnabled]);
+  }, [playAnimation, settings.dailyActionsEnabled]);
 
   useEffect(() => {
     if (!settings.calendarEnabled) return undefined;
@@ -286,6 +303,11 @@ export default function App() {
       const events = await window.petAPI.listUpcomingCalendarEvents();
       const now = Date.now();
       const leadMs = settings.calendarLeadMinutes * 60_000;
+
+      const currentIds = new Set(events.map((e: CalendarEvent) => e.id));
+      for (const id of notifiedCalendarIdsRef.current) {
+        if (!currentIds.has(id)) notifiedCalendarIdsRef.current.delete(id);
+      }
 
       const nextEvent = events.find((event: CalendarEvent) => {
         if (notifiedCalendarIdsRef.current.has(event.id)) return false;
@@ -455,6 +477,13 @@ export default function App() {
 
       {settingsOpen ? (
         <aside className="settings-panel no-drag">
+          <header className="settings-panel-header">
+            <strong>设置</strong>
+            <button type="button" onClick={() => setSettingsOpen(false)}>
+              关闭
+            </button>
+          </header>
+
           <label>
             喝水
             <input
@@ -528,9 +557,6 @@ export default function App() {
             <div className="permission-row">
               <span>通知</span>
               <strong>{notificationStatusLabel(permissionStatus?.notifications)}</strong>
-              <button type="button" onClick={testNotification}>
-                测试
-              </button>
             </div>
             <div className="permission-row">
               <span>日历</span>

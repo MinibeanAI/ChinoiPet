@@ -10,6 +10,7 @@ declare global {
       getWindowBounds: () => Promise<WindowBounds>;
       setWindowPosition: (point: WindowPoint) => Promise<void>;
       setWindowSize: (size: WindowSize) => Promise<void>;
+      setWindowBounds: (bounds: WindowBounds) => Promise<void>;
       saveWindowBounds: () => Promise<WindowBounds | undefined>;
       notify: (payload: NotificationPayload) => Promise<void>;
       listUpcomingCalendarEvents: () => Promise<CalendarEvent[]>;

@@ -14,6 +14,39 @@ const path = require('node:path');
 const fs = require('node:fs');
 const { execFile } = require('node:child_process');
 
+if (process.stdout) {
+  process.stdout.on('error', (error) => {
+    if (error?.code === 'EPIPE') return;
+  });
+}
+
+if (process.stderr) {
+  process.stderr.on('error', (error) => {
+    if (error?.code === 'EPIPE') return;
+  });
+}
+
+process.on("uncaughtException", (error) => {
+  if (error?.code === "EPIPE" || error?.code === "ERR_IPC_CHANNEL_CLOSED") return;
+  try {
+    const msg = "[" + new Date().toISOString() + "] " + (error?.stack ?? String(error)) + "\n";
+    require("node:fs").appendFileSync(
+      require("node:path").join(require("electron").app.getPath("userData"), "error.log"),
+      msg
+    );
+  } catch {}
+});
+
+process.on("unhandledRejection", (reason) => {
+  try {
+    const msg = "[" + new Date().toISOString() + "] Unhandled rejection: " + (reason?.stack ?? String(reason)) + "\n";
+    require("node:fs").appendFileSync(
+      require("node:path").join(require("electron").app.getPath("userData"), "error.log"),
+      msg
+    );
+  } catch {}
+});
+
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
 const windowStatePath = path.join(app.getPath('userData'), 'window-state.json');
 const defaultSettings = {
@@ -35,7 +68,7 @@ const defaultWindowState = {
 let mainWindow;
 let tray;
 let lastCalendarAccess = {
-  ok: process.platform === 'darwin',
+  ok: false,
   message: process.platform === 'darwin' ? '尚未检测日历权限。' : '系统日历仅在 macOS 可用。'
 };
 
@@ -360,10 +393,12 @@ function listCalendarEvents() {
   }
 
   const script = `
+tell application id "com.apple.iCal" to launch
+delay 0.5
 set nowDate to current date
 set endDate to nowDate + (24 * hours)
 set outputLines to {}
-tell application "Calendar"
+tell application id "com.apple.iCal"
   repeat with calendarItem in calendars
     set calendarName to name of calendarItem
     try
@@ -476,6 +511,15 @@ app.whenReady().then(() => {
   ipcMain.handle('window:set-size', (_event, size) => {
     if (!mainWindow) return;
     mainWindow.setSize(Math.round(size.width), Math.round(size.height), false);
+  });
+  ipcMain.handle('window:set-bounds', (_event, bounds) => {
+    if (!mainWindow) return;
+    mainWindow.setBounds({
+      x: Math.round(bounds.x),
+      y: Math.round(bounds.y),
+      width: Math.round(bounds.width),
+      height: Math.round(bounds.height)
+    }, false);
   });
   ipcMain.handle('window:save-bounds', () => {
     if (!mainWindow) return;
